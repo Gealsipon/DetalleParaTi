@@ -25,7 +25,7 @@ toggleDarkModeButton.addEventListener("click", () => {
 
 // Cerrar Sesión con confirmación
 document.getElementById("logoutButton").addEventListener("click", () => {
-  const confirmation = confirm("¿Estás seguro de que quieres cerrar sesión?");
+  const confirmation = confirm("¿Estás segura de que quieres cerrar sesión? Yo todavía no quiero despedirme de ti 💕?");
   if (confirmation) {
     window.location.href = "index.html";
   }
@@ -201,4 +201,5 @@ document.getElementById('sorpresa-btn').addEventListener('click', function() {
     const contenido = document.getElementById('sorpresa-content');
     contenido.classList.toggle('hidden'); // Muestra u oculta la sorpresa
 });
+
 
