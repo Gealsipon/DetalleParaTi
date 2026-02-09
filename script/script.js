@@ -29,8 +29,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
     const anniversaryDate = document.getElementById("anniversaryDate").value;
     // Modifica aquí la fecha de tu aniversario - AAAA-MM-DD
-    if (anniversaryDate === "2023-05-14") {
-        // Guardar la fecha de aniversario en localStorage
+    if (anniversaryDate === "2025-10-23") {
+        // Guardar la fecha Especial en localStorage
         localStorage.setItem("anniversaryDate", anniversaryDate);
         window.location.href = "dashboard.html"; // Redirige al dashboard
     } else {
@@ -117,4 +117,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Marcar que el usuario ha visto el tour
     localStorage.setItem('tourVisto', 'true');
+
 });
