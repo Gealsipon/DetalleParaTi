@@ -97,7 +97,7 @@ window.addEventListener("load", () => {
     // Mostrar el número de años, meses y días en el dashboard
     document.getElementById(
       "daysCount"
-    ).innerText = `Ya han pasado ${years} ${yearText}, ${months} ${monthText} y ${days} ${dayText}, desde que comenzó nuestra historia de amor. Me alegra mucho estar aún a tu lado y disfrutar cada momento, eres la persona que amaré de por vida. ¡Te Amoo❤️!`;
+    ).innerText = `Ya han pasado ${years} ${yearText}, ${months} ${monthText} y ${days} ${dayText}, desde que empezó lo nuestro, y sigo eligiéndote con la misma ilusión del primer día. No todo es perfecto, pero todo contigo vale la pena. Gracias por quedarte, por cuidarme y por hacerme sentir en casa. Quiero seguir construyendo esta historia a tu lado, paso a paso, por toda la vida. Te amo con el corazón ❤️`;
   }
 });
 
@@ -201,3 +201,4 @@ document.getElementById('sorpresa-btn').addEventListener('click', function() {
     const contenido = document.getElementById('sorpresa-content');
     contenido.classList.toggle('hidden'); // Muestra u oculta la sorpresa
 });
+
