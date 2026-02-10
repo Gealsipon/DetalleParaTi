@@ -485,6 +485,17 @@ main {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+.gallery video {
+    width: 100%;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 /* Estilos para la playlist */
 .playlist {
     margin-top: 2rem;
@@ -847,6 +858,7 @@ audio {
     }
 
 }
+
 
 
 
