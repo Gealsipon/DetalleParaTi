@@ -466,7 +466,7 @@ main {
 }
 
 .timeline-event img {
-    width: 100%;
+    width: 30%;
     border-radius: var(--border-radius);
     margin-bottom: 1rem;
 }
@@ -845,4 +845,5 @@ audio {
     .hamburger-button {
         display: flex; /* Mostrar en móviles */
     }
+
 }
