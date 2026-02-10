@@ -486,7 +486,7 @@ main {
 }
 
 .gallery video {
-    width: 100%;
+    width: 70%;
     border-radius: var(--border-radius);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -858,6 +858,7 @@ audio {
     }
 
 }
+
 
 
 
