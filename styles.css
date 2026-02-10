@@ -466,7 +466,7 @@ main {
 }
 
 .timeline-event img {
-    width: 70%;
+    width: 100%;
     border-radius: var(--border-radius);
     margin-bottom: 1rem;
 }
@@ -847,4 +847,5 @@ audio {
     }
 
 }
+
 
