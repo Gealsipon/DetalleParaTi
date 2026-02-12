@@ -387,32 +387,339 @@
         </section>
 
                 <section id="sorpresas" class="content-section">
-            <h2>Sorpresas</h2>
-            <p>¡Prepárate para una sorpresa especial!</p>
-            <!-- Contenedor de la sorpresa -->
-            <div class="sorpresa-container">
-                <button id="sorpresa-btn" class="sorpresa-btn">
-                    <i class="ri-star-smile-line"></i> ¡Haz clic para ver la sorpresa!
-                </button>
-                <div id="sorpresa-content" class="sorpresa-content hidden">
-                    <div class="sorpresa-foto">
-                        <img src="https://img.freepik.com/foto-gratis/hermosa-joven-pareja-sentada-terraplen-piedra-envuelta-manta_1153-9201.jpg" alt="Sorpresa Peru">
-                        <div class="sorpresa-texto">
-                            <p>✈️ Muy pronto...</p>
-                            <h3>Te espero en Marzo</h3>
-                            <h2>¡El viaje a Perú! 🇵🇪</h2>
-                        </div>
-                    </div>
-                </div>
+    <h2>Sorpresas</h2>
+    <p>¡Prepárate para una sorpresa especial!</p>
+
+    <div class="sorpresa-container">
+        <button id="sorpresa-btn" class="sorpresa-btn" onclick="abrirSorpresa()">
+            <i class="ri-star-smile-line"></i> ¡Haz clic para ver la sorpresa!
+        </button>
+    </div>
+
+    <!-- MODAL CON LA EXPERIENCIA COMPLETA -->
+    <div id="modal-sorpresa" style="display:none; position:fixed; inset:0; z-index:9999;">
+
+        <!-- Botón cerrar -->
+        <button onclick="cerrarSorpresa()" style="
+            position:fixed; top:16px; right:20px; z-index:10000;
+            background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.3);
+            color:white; border-radius:50%; width:38px; height:38px;
+            font-size:1.1rem; cursor:pointer;">✕</button>
+
+        <canvas id="bgCanvas2" style="position:fixed;inset:0;pointer-events:none;z-index:0;"></canvas>
+
+        <!-- Pétalos -->
+        <div id="petals-container"></div>
+
+        <!-- ESCENA 1: SOBRE -->
+        <div id="s1" style="
+            position:fixed;inset:0;z-index:10;
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            background:radial-gradient(ellipse at 50% 60%, #3d0f20 0%, #0d0508 70%);
+            transition:opacity 1s ease,visibility 1s ease;
+            font-family:'Cormorant Garamond',serif;">
+
+            <div onclick="irEscena2()" style="
+                position:relative; width:160px; height:120px; cursor:pointer;
+                filter:drop-shadow(0 0 40px rgba(200,67,90,.7));
+                animation:envFloat2 3s ease-in-out infinite;">
+
+                <div style="position:absolute;top:0;left:0;right:0;height:0;
+                    border-left:80px solid transparent;border-right:80px solid transparent;
+                    border-top:55px solid #a02040;transform-origin:top center;
+                    transition:transform .6s cubic-bezier(.34,1.56,.64,1);z-index:2;"
+                    id="env-flap2"></div>
+
+                <div style="position:absolute;bottom:0;left:0;right:0;height:0;
+                    border-left:80px solid transparent;border-right:80px solid transparent;
+                    border-bottom:55px solid #7a1028;z-index:1;"></div>
+
+                <div style="position:absolute;bottom:0;left:0;right:0;height:90px;
+                    background:linear-gradient(160deg,#c8435a,#8b1a2e);
+                    border-radius:4px 4px 8px 8px;"></div>
+
+                <div style="position:absolute;top:28px;left:50%;transform:translateX(-50%);
+                    font-size:1.6rem;z-index:3;animation:heartPulse2 1.5s ease-in-out infinite;">💌</div>
             </div>
-        </section>
+
+            <p style="margin-top:28px;font-style:italic;font-size:1rem;
+                color:rgba(253,246,240,.6);letter-spacing:.2em;
+                animation:blinkSoft2 2s ease-in-out infinite;">Toca el sobre para abrir</p>
+
+            <p style="position:absolute;bottom:40px;color:rgba(253,246,240,.25);
+                font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;">
+                Para: Alejandra ✦ De: Alexander</p>
+        </div>
+
+        <!-- ESCENA 2: CARTA -->
+        <div id="s2" style="
+            position:fixed;inset:0;z-index:9;
+            display:flex;align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;
+            transition:opacity .8s ease,visibility .8s ease;
+            padding:20px;
+            background:radial-gradient(ellipse at 50% 40%, #2a0810 0%, #0d0508 70%);">
+
+            <div style="
+                position:relative;max-width:480px;width:100%;
+                background:linear-gradient(150deg,#fdf8f2 0%,#fff5f5 60%,#fdf0ec 100%);
+                border-radius:4px;padding:48px 44px 40px;
+                box-shadow:0 0 0 1px rgba(212,168,75,.35),0 40px 100px rgba(0,0,0,.6);
+                max-height:90vh;overflow-y:auto;
+                font-family:'Cormorant Garamond',serif;">
+
+                <p id="letterDate2" style="font-family:'Dancing Script',cursive;font-size:.95rem;
+                    color:rgba(100,40,55,.5);text-align:right;margin-bottom:18px;"></p>
+
+                <p style="font-family:'Dancing Script',cursive;font-size:1.7rem;
+                    color:#8b1a2e;margin-bottom:18px;">Mi querida Alejandra,</p>
+
+                <div style="font-size:1.08rem;line-height:1.95;color:#3a1822;font-weight:300;">
+                    <p style="margin-bottom:14px;">Hay cosas que uno siente y no sabe bien cómo decir. Esto es una de ellas.</p>
+                    <p style="margin-bottom:14px;">Desde que te conocí, algo cambió. No sé si es tu sonrisa, tu forma de reír, o simplemente
+                    cómo haces que todo se sienta <em style="color:#c8435a;">mejor</em> cuando estás cerca.
+                    Pero lo que sí sé, es que pienso en ti más de lo que debería… y me parece perfecto.</p>
+                    <p style="margin-bottom:14px;">He guardado esto por un tiempo porque quería hacerlo bien.
+                    Quería que <em style="color:#c8435a;">tú</em> sintieras lo que yo siento cuando estoy contigo.
+                    Que no hay nadie más en el mundo con quien preferiría estar, reírme, viajar —
+                    <strong style="color:#8b1a2e;">ir a Perú</strong> y ver el mundo a tu lado. 🇵🇪</p>
+                    <p style="margin-bottom:14px;">Así que aquí estoy, con el corazón en la mano, siendo honesto contigo:</p>
+                </div>
+
+                <p style="font-family:'Dancing Script',cursive;font-size:1.4rem;
+                    color:#8b1a2e;text-align:right;margin-top:24px;">
+                    Con todo mi cariño,<br>
+                    <span style="font-family:'Dancing Script',cursive;font-size:1.8rem;color:#8b1a2e;">Alexander</span><br>
+                    <span style="font-size:.85rem;color:rgba(100,40,55,.5);font-family:'Cormorant Garamond',serif;">♥</span>
+                </p>
+
+                <button onclick="irEscena3()" style="
+                    display:block;width:100%;margin-top:28px;padding:14px;
+                    background:linear-gradient(135deg,#c8435a,#8b1a2e);
+                    color:white;border:none;border-radius:50px;
+                    font-family:'Playfair Display',serif;font-style:italic;
+                    font-size:1.1rem;cursor:pointer;
+                    box-shadow:0 8px 25px rgba(200,67,90,.35);">
+                    Seguir leyendo... 💌
+                </button>
+            </div>
+        </div>
+
+        <!-- ESCENA 3: PREGUNTA -->
+        <div id="s3" style="
+            position:fixed;inset:0;z-index:8;
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;
+            transition:opacity .8s ease,visibility .8s ease;
+            padding:30px;text-align:center;
+            background:radial-gradient(ellipse at 50% 50%, #2a0810 0%, #0d0508 70%);">
+
+            <div style="font-size:3rem;margin-bottom:16px;">💕</div>
+
+            <h1 style="font-family:'Playfair Display',serif;font-style:italic;
+                font-size:clamp(2rem,7vw,3.2rem);color:white;line-height:1.2;
+                margin-bottom:10px;text-shadow:0 0 40px rgba(200,67,90,.4);">
+                "¿Puedo ser<br><span style="color:#f0a0b0;">tu novio?</span>"
+            </h1>
+
+            <p style="font-family:'Dancing Script',cursive;font-size:1.2rem;
+                color:rgba(255,255,255,.45);margin-bottom:40px;">— Alexander ♥</p>
+
+            <button onclick="decirSi()" style="
+                padding:16px 44px;
+                background:linear-gradient(135deg,#c8435a 0%,#8b1a2e 100%);
+                color:white;border:none;border-radius:50px;
+                font-family:'Playfair Display',serif;font-style:italic;
+                font-size:1.2rem;cursor:pointer;
+                box-shadow:0 8px 30px rgba(200,67,90,.5);">
+                ¡Sí quiero! 💕
+            </button>
+
+            <button id="btnNo2" onmouseover="escaparBtn()" ontouchstart="escaparBtn()" style="
+                padding:14px 30px;background:transparent;
+                color:rgba(255,255,255,.35);
+                border:1px solid rgba(255,255,255,.2);border-radius:50px;
+                font-family:'Cormorant Garamond',serif;font-size:1rem;
+                cursor:pointer;position:fixed;left:55%;top:75%;">No...</button>
+        </div>
+
+        <!-- ESCENA 4: CELEBRACIÓN -->
+        <div id="s4" style="
+            position:fixed;inset:0;z-index:20;
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;
+            transition:opacity .8s ease,visibility .8s ease;
+            padding:30px;text-align:center;
+            background:radial-gradient(ellipse at 50% 40%, #3d0f20 0%, #0d0508 70%);">
+
+            <div style="font-size:4.5rem;margin-bottom:16px;
+                animation:celebBounce2 .5s ease-in-out infinite alternate;">🥂</div>
+
+            <h1 style="font-family:'Playfair Display',serif;
+                font-size:clamp(2.2rem,8vw,4rem);color:white;
+                line-height:1.1;margin-bottom:12px;">
+                ¡Dijiste<br><em style="color:#f0a0b0;">Sí</em>! 🎉
+            </h1>
+
+            <p style="font-family:'Dancing Script',cursive;
+                font-size:clamp(1.4rem,5vw,2rem);color:#f0d080;margin-bottom:14px;">
+                Alexander & Alejandra 💕
+            </p>
+
+            <p style="font-family:'Cormorant Garamond',serif;font-style:italic;
+                font-size:clamp(.95rem,2.5vw,1.2rem);color:rgba(255,255,255,.65);
+                max-width:380px;line-height:1.8;">
+                Eres la persona más feliz del mundo ahora mismo.<br>
+                Juntos a conquistarlo todo —<br>
+                y <strong style="color:#f0d080;">Perú</strong> será solo el principio. ✈️🇵🇪
+            </p>
+        </div>
+
+    </div><!-- fin modal -->
+</section>
     </main>
 
     <script src="script/dashboard.js"></script>
+    <script>
+// ── ABRIR / CERRAR MODAL ──
+function abrirSorpresa(){
+    document.getElementById('modal-sorpresa').style.display = 'block';
+    iniciarCanvas2();
+    spawnPetalos();
+    setFecha();
+}
+function cerrarSorpresa(){
+    document.getElementById('modal-sorpresa').style.display = 'none';
+    // reset escenas
+    document.getElementById('s1').style.cssText = '';
+    document.getElementById('s2').style.opacity=0; document.getElementById('s2').style.visibility='hidden';
+    document.getElementById('s3').style.opacity=0; document.getElementById('s3').style.visibility='hidden';
+    document.getElementById('s4').style.opacity=0; document.getElementById('s4').style.visibility='hidden';
+    escapeCount2 = 0;
+}
+
+// ── CANVAS ──
+function iniciarCanvas2(){
+    const cv = document.getElementById('bgCanvas2');
+    const cx = cv.getContext('2d');
+    cv.width=innerWidth; cv.height=innerHeight;
+    const stars = Array.from({length:150},()=>({
+        x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+        r:Math.random()*1.4+.2, a:Math.random()*Math.PI*2, sp:Math.random()*.004+.002
+    }));
+    function draw(){
+        cx.clearRect(0,0,cv.width,cv.height);
+        stars.forEach(s=>{ s.a+=s.sp; cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        cx.fillStyle=`rgba(255,210,220,${Math.abs(Math.sin(s.a))*.7})`; cx.fill(); });
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ── PÉTALOS ──
+function spawnPetalos(){
+    const emojis=['🌸','🌹','✨','💕','🌺'];
+    const cont = document.getElementById('petals-container');
+    cont.innerHTML = '';
+    for(let i=0;i<18;i++){
+        const p=document.createElement('span');
+        p.style.cssText=`position:fixed;pointer-events:none;z-index:2;opacity:0;
+            left:${Math.random()*100}vw;
+            font-size:${.7+Math.random()*.9}rem;
+            animation:petalFall2 ${10+Math.random()*14}s ${Math.random()*14}s linear infinite;`;
+        p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+        cont.appendChild(p);
+    }
+}
+
+// ── FECHA ──
+function setFecha(){
+    const d=new Date();
+    const m=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    document.getElementById('letterDate2').textContent=d.getDate()+' de '+m[d.getMonth()]+' de '+d.getFullYear();
+}
+
+// ── NAVEGACIÓN ESCENAS ──
+function irEscena2(){
+    const s1=document.getElementById('s1');
+    s1.style.opacity=0; s1.style.visibility='hidden'; s1.style.pointerEvents='none';
+    setTimeout(()=>{ const s2=document.getElementById('s2'); s2.style.opacity=1; s2.style.visibility='visible'; },700);
+}
+function irEscena3(){
+    const s2=document.getElementById('s2'); s2.style.opacity=0; s2.style.visibility='hidden';
+    setTimeout(()=>{ const s3=document.getElementById('s3'); s3.style.opacity=1; s3.style.visibility='visible'; },500);
+}
+
+// ── BOTÓN ESCAPE ──
+let escapeCount2=0;
+function escaparBtn(){
+    escapeCount2++;
+    const btn=document.getElementById('btnNo2');
+    const nx=80+Math.random()*(innerWidth-160);
+    const ny=80+Math.random()*(innerHeight-160);
+    btn.style.transition='left .3s ease,top .3s ease';
+    btn.style.left=nx+'px'; btn.style.top=ny+'px';
+    const msgs=['No…','Espera…','¡Piénsalo!','¡Noooo!','😅'];
+    if(escapeCount2<msgs.length) btn.textContent=msgs[escapeCount2];
+    if(escapeCount2>=5) btn.style.display='none';
+}
+
+// ── SÍ ──
+function decirSi(){
+    const s3=document.getElementById('s3'); s3.style.opacity=0; s3.style.visibility='hidden';
+    setTimeout(()=>{
+        const s4=document.getElementById('s4'); s4.style.opacity=1; s4.style.visibility='visible';
+        [0,300,700,1200,2000,2800].forEach(d=>fuegos(d));
+    },500);
+}
+
+function fuegos(delay=0){
+    setTimeout(()=>{
+        const colors=['#f0a0b0','#d4a84b','#ffffff','#c8435a','#f0d080','#ffccdd'];
+        const cx_=20+Math.random()*60, cy_=10+Math.random()*50;
+        for(let i=0;i<35;i++){
+            const sp=document.createElement('div');
+            const angle=(i/35)*Math.PI*2, dist=80+Math.random()*120;
+            const tx=Math.cos(angle)*dist, ty=Math.sin(angle)*dist-60;
+            const dur=(.6+Math.random()*.8)+'s';
+            const col=colors[Math.floor(Math.random()*colors.length)];
+            sp.style.cssText=`position:fixed;width:6px;height:6px;border-radius:50%;
+                pointer-events:none;z-index:30;
+                left:${cx_}vw;top:${cy_}vh;background:${col};
+                box-shadow:0 0 6px 2px ${col};
+                animation:sparkFly2 ${dur} ease-out forwards;
+                --tx:${tx}px;--ty:${ty}px;--dur:${dur};`;
+            document.body.appendChild(sp);
+            sp.addEventListener('animationend',()=>sp.remove());
+        }
+    },delay);
+}
+</script>
+
+<!-- Animaciones necesarias -->
+<style>
+@keyframes envFloat2{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+@keyframes heartPulse2{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.3)}}
+@keyframes blinkSoft2{0%,100%{opacity:.4}50%{opacity:.9}}
+@keyframes celebBounce2{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.15) rotate(5deg)}}
+@keyframes petalFall2{
+    0%{opacity:0;transform:translateY(-20px) rotate(0deg)}
+    10%{opacity:.7}90%{opacity:.5}
+    100%{opacity:0;transform:translateY(105vh) rotate(720deg)}
+}
+@keyframes sparkFly2{
+    0%{transform:translate(0,0) scale(1);opacity:1}
+    100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
+}
+</style>
 </body>
 
 
 </html>
+
 
 
 
