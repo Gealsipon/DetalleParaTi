@@ -243,16 +243,403 @@
                           Tu navegador no soporta el elemento de video.
                       </video>
                 </div>
-            <!-- Playlist de Canciones -->
-            <div class="playlist">
-                <h3>Nuestra Playlist</h3>
-                <ul>
-                    <li><a href="https://www.youtube.com/watch?v=_aOiGBZTIqg">Canción 1 - Artista</a></li>
-                    <li><a href="#">Canción 2 - Artista</a></li>
-                    <li><a href="#">Canción 3 - Artista</a></li>
-                </ul>
-            </div>
+            <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+<style>
+:root {
+  --rose:    #e8406a;
+  --rose-dk: #b02050;
+  --gold:    #f0c070;
+  --bg:      #110508;
+  --card:    rgba(255,255,255,0.045);
+  --border:  rgba(232,64,106,0.18);
+}
+
+.playlist {
+  background: radial-gradient(ellipse at 20% 0%, #2d0f1e 0%, #110508 55%, #0d0818 100%);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 36px 28px 28px;
+  max-width: 580px;
+  margin: 0 auto;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 0 60px rgba(180,30,80,0.25), 0 2px 0 rgba(255,200,220,0.06) inset;
+  position: relative;
+  overflow: hidden;
+}
+.playlist::before {
+  content:''; position:absolute; top:-80px; right:-80px;
+  width:260px; height:260px;
+  background:radial-gradient(circle,rgba(232,64,106,0.12) 0%,transparent 70%);
+  border-radius:50%; pointer-events:none;
+}
+.playlist::after {
+  content:''; position:absolute; bottom:-60px; left:-60px;
+  width:200px; height:200px;
+  background:radial-gradient(circle,rgba(100,30,180,0.1) 0%,transparent 70%);
+  border-radius:50%; pointer-events:none;
+}
+
+/* Encabezado */
+.pl-header { text-align:center; margin-bottom:24px; position:relative; z-index:1; }
+.pl-title {
+  font-family:'Dancing Script',cursive; font-size:2.1rem; font-weight:700;
+  color:#fff; margin:0 0 4px; line-height:1.2;
+}
+.pl-heart { display:inline-block; color:var(--rose); animation:hb 1.5s ease-in-out infinite; }
+@keyframes hb {
+  0%,100%{transform:scale(1)} 14%{transform:scale(1.3)}
+  28%{transform:scale(1)} 42%{transform:scale(1.18)} 70%{transform:scale(1)}
+}
+.pl-sub {
+  font-size:0.72rem; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(255,160,180,0.55); margin:0;
+}
+.pl-divider { display:flex; align-items:center; gap:10px; margin:18px 0; }
+.pl-divider span { flex:1; height:1px; background:linear-gradient(to right,transparent,rgba(232,64,106,0.35),transparent); }
+.pl-divider em { color:var(--gold); font-style:normal; font-size:12px; }
+
+/* Audio oculto */
+#pl-audio { display:none; }
+
+/* Now Playing */
+.pl-now-playing {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:18px; padding:18px 20px; margin-bottom:16px;
+  position:relative; z-index:1;
+}
+.pl-np-top { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+
+/* Disco */
+.pl-disc {
+  width:56px; height:56px; border-radius:50%; flex-shrink:0;
+  background:conic-gradient(from 0deg,#2d0f1e,#e8406a,#f0c070,#e8406a,#2d0f1e,#2d0f1e 60%,#1a0a15);
+  box-shadow:0 0 18px rgba(232,64,106,0.4);
+  position:relative; transition:box-shadow 0.4s;
+}
+.pl-disc::after {
+  content:''; position:absolute; inset:18px;
+  background:#110508; border-radius:50%;
+  border:2px solid rgba(232,64,106,0.3);
+}
+.pl-disc.spinning { animation:spin 4s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.pl-np-info { flex:1; min-width:0; }
+.pl-np-name {
+  font-size:1rem; font-weight:700; color:#fff;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0 0 3px;
+}
+.pl-np-artist {
+  font-size:0.78rem; color:rgba(255,160,180,0.65);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* Visualizador */
+.pl-visualizer { display:flex; align-items:flex-end; gap:3px; height:24px; }
+.pl-visualizer span {
+  display:block; width:3px; border-radius:3px;
+  background:linear-gradient(to top,var(--rose-dk),var(--rose));
+  transform:scaleY(0.15); transform-origin:bottom; transition:transform 0.1s;
+}
+.pl-visualizer.active span:nth-child(1){animation:bar 0.7s ease-in-out infinite alternate;}
+.pl-visualizer.active span:nth-child(2){animation:bar 0.5s ease-in-out 0.10s infinite alternate;}
+.pl-visualizer.active span:nth-child(3){animation:bar 0.9s ease-in-out 0.20s infinite alternate;}
+.pl-visualizer.active span:nth-child(4){animation:bar 0.6s ease-in-out 0.05s infinite alternate;}
+.pl-visualizer.active span:nth-child(5){animation:bar 0.8s ease-in-out 0.15s infinite alternate;}
+@keyframes bar { from{transform:scaleY(0.15);} to{transform:scaleY(1);} }
+
+/* Progreso */
+.pl-progress-wrap { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.pl-time { font-size:0.68rem; color:rgba(255,160,180,0.55); width:32px; }
+.pl-time.right { text-align:right; }
+.pl-progress {
+  flex:1; height:4px; background:rgba(255,255,255,0.1);
+  border-radius:4px; cursor:pointer; position:relative; overflow:hidden;
+}
+.pl-progress-fill {
+  height:100%; width:0%;
+  background:linear-gradient(to right,var(--rose-dk),var(--rose),var(--gold));
+  border-radius:4px; transition:width 0.3s linear; pointer-events:none;
+}
+
+/* Controles */
+.pl-controls { display:flex; align-items:center; justify-content:center; gap:16px; }
+.pl-btn {
+  background:none; border:none; cursor:pointer;
+  color:rgba(255,160,180,0.7); padding:6px; border-radius:50%;
+  transition:all 0.25s; display:flex; align-items:center; justify-content:center;
+}
+.pl-btn:hover { color:#fff; transform:scale(1.1); }
+.pl-btn-play {
+  width:48px; height:48px;
+  background:linear-gradient(135deg,var(--rose-dk),var(--rose));
+  color:#fff !important;
+  box-shadow:0 4px 18px rgba(232,64,106,0.5);
+}
+.pl-btn-play:hover { box-shadow:0 6px 24px rgba(232,64,106,0.7); transform:scale(1.08) !important; }
+
+/* Volumen */
+.pl-vol-row { display:flex; align-items:center; gap:8px; margin-top:12px; }
+.pl-vol-icon { font-size:14px; color:rgba(255,160,180,0.5); }
+input[type=range].pl-vol {
+  flex:1; height:3px; -webkit-appearance:none; appearance:none;
+  background:rgba(255,255,255,0.12); border-radius:4px; cursor:pointer;
+}
+input[type=range].pl-vol::-webkit-slider-thumb {
+  -webkit-appearance:none; width:12px; height:12px;
+  border-radius:50%; background:var(--rose); cursor:pointer;
+}
+
+/* Lista */
+.pl-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; position:relative; z-index:1; }
+.pl-item {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 14px; background:var(--card);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:12px; cursor:pointer; transition:all 0.25s;
+  position:relative; overflow:hidden;
+}
+.pl-item::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(232,64,106,0.12),transparent);
+  opacity:0; transition:opacity 0.25s;
+}
+.pl-item:hover::before { opacity:1; }
+.pl-item:hover { border-color:var(--border); transform:translateX(3px); }
+.pl-item.active { border-color:rgba(232,64,106,0.45); background:rgba(232,64,106,0.1); }
+.pl-item.active::before { opacity:1; }
+
+.pl-item-num {
+  width:26px; height:26px; border-radius:50%;
+  background:rgba(232,64,106,0.12); border:1px solid rgba(232,64,106,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.68rem; font-weight:700; color:var(--rose); flex-shrink:0; transition:all 0.25s;
+}
+.pl-item.active .pl-item-num,
+.pl-item:hover .pl-item-num { background:var(--rose); color:#fff; border-color:var(--rose); }
+
+.pl-item-info { flex:1; min-width:0; }
+.pl-item-name { font-size:0.85rem; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pl-item-artist { font-size:0.72rem; color:rgba(255,160,180,0.55); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pl-item-dur { font-size:0.7rem; color:rgba(255,160,180,0.4); flex-shrink:0; }
+
+.pl-footer {
+  text-align:center; margin-top:18px;
+  font-size:0.68rem; color:rgba(255,140,160,0.3);
+  letter-spacing:1.5px; position:relative; z-index:1;
+}
+</style>
+
+<!-- ===================== PLAYLIST HTML ===================== -->
+<div class="playlist">
+
+  <audio id="pl-audio" preload="none"></audio>
+
+  <div class="pl-header">
+    <h3 class="pl-title">
+      <span class="pl-heart">♥</span> Nuestra Playlist <span class="pl-heart">♥</span>
+    </h3>
+    <p class="pl-sub">Canciones que nos unen</p>
+  </div>
+
+  <div class="pl-divider"><span></span><em>✦</em><span></span></div>
+
+  <!-- Reproductor activo -->
+  <div class="pl-now-playing">
+    <div class="pl-np-top">
+      <div class="pl-disc" id="pl-disc"></div>
+      <div class="pl-np-info">
+        <p class="pl-np-name"   id="pl-np-name">Elige una canción ♪</p>
+        <p class="pl-np-artist" id="pl-np-artist">Pulsa play para comenzar</p>
+      </div>
+      <div class="pl-visualizer" id="pl-viz">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="pl-progress-wrap">
+      <span class="pl-time"       id="pl-cur">0:00</span>
+      <div  class="pl-progress"   id="pl-progress">
+        <div class="pl-progress-fill" id="pl-fill"></div>
+      </div>
+      <span class="pl-time right" id="pl-dur">0:00</span>
+    </div>
+
+    <div class="pl-controls">
+      <button class="pl-btn" onclick="plPrev()" title="Anterior">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="pl-btn pl-btn-play" onclick="plToggle()" title="Play/Pausa">
+        <svg id="pl-play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="pl-btn" onclick="plNext()" title="Siguiente">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM16 6h2v12h-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="pl-vol-row">
+      <span class="pl-vol-icon">🔈</span>
+      <input type="range" class="pl-vol" id="pl-vol" min="0" max="1" step="0.01" value="0.8" oninput="plSetVol(this.value)">
+      <span class="pl-vol-icon">🔊</span>
+    </div>
+  </div>
+
+  <!-- Lista de canciones -->
+  <ul class="pl-list">
+    <li class="pl-item" onclick="plPlay(0)">
+      <span class="pl-item-num">1</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Ámame Toda la Vida</span>
+        <span class="pl-item-artist">El Gran Combo de Puerto Rico</span>
+      </span>
+      <span class="pl-item-dur" id="dur-0">--:--</span>
+    </li>
+    <li class="pl-item" onclick="plPlay(1)">
+      <span class="pl-item-num">2</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Niña Bonita</span>
+        <span class="pl-item-artist">Chino y Nacho</span>
+      </span>
+      <span class="pl-item-dur" id="dur-1">--:--</span>
+    </li>
+    <li class="pl-item" onclick="plPlay(2)">
+      <span class="pl-item-num">3</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Feliz Me Siento</span>
+        <span class="pl-item-artist">Salsa Romántica</span>
+      </span>
+      <span class="pl-item-dur" id="dur-2">--:--</span>
+    </li>
+    <li class="pl-item" onclick="plPlay(3)">
+      <span class="pl-item-num">4</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Encontré</span>
+        <span class="pl-item-artist">Felipe Peláez</span>
+      </span>
+      <span class="pl-item-dur" id="dur-3">--:--</span>
+    </li>
+    <li class="pl-item" onclick="plPlay(4)">
+      <span class="pl-item-num">5</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Tú y Yo</span>
+        <span class="pl-item-artist">La Misma Gente</span>
+      </span>
+      <span class="pl-item-dur" id="dur-4">--:--</span>
+    </li>
+    <li class="pl-item" onclick="plPlay(5)">
+      <span class="pl-item-num">6</span>
+      <span class="pl-item-info">
+        <span class="pl-item-name">Andas en Mi Cabeza</span>
+        <span class="pl-item-artist">Chino y Nacho</span>
+      </span>
+      <span class="pl-item-dur" id="dur-5">--:--</span>
+    </li>
+  </ul>
+
+  <p class="pl-footer">♡ Solo para nosotros ♡</p>
+</div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+/*
+  ⚠️ CAMBIA AQUÍ los nombres de tus archivos MP4
+  Ejemplo: si tu archivo se llama "cancion1.mp4" pon  src: "cancion1.mp4"
+  Si están en una subcarpeta:                          src: "musica/cancion1.mp4"
+*/
+const PL_SONGS = [
+  { src: "amame_toda_la_vida.mp4",  name: "Ámame Toda la Vida",  artist: "El Gran Combo de Puerto Rico" },
+  { src: "nina_bonita.mp4",         name: "Niña Bonita",          artist: "Chino y Nacho" },
+  { src: "feliz_me_siento.mp4",     name: "Feliz Me Siento",      artist: "Salsa Romántica" },
+  { src: "encontre.mp4",            name: "Encontré",             artist: "Felipe Peláez" },
+  { src: "tu_y_yo.mp4",             name: "Tú y Yo",              artist: "La Misma Gente" },
+  { src: "andas_en_mi_cabeza.mp4",  name: "Andas en Mi Cabeza",   artist: "Chino y Nacho" }
+];
+
+const audio    = document.getElementById('pl-audio');
+const disc     = document.getElementById('pl-disc');
+const viz      = document.getElementById('pl-viz');
+const npName   = document.getElementById('pl-np-name');
+const npArtist = document.getElementById('pl-np-artist');
+const fill     = document.getElementById('pl-fill');
+const curEl    = document.getElementById('pl-cur');
+const durEl    = document.getElementById('pl-dur');
+const playIcon = document.getElementById('pl-play-icon');
+const items    = document.querySelectorAll('.pl-item');
+
+let current = -1, isPlaying = false;
+
+function fmt(s) {
+  if (!s || isNaN(s)) return '--:--';
+  return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+}
+
+function plPlay(idx) {
+  if (idx === current && isPlaying) { plPause(); return; }
+  current = idx;
+  audio.src = PL_SONGS[idx].src;
+  audio.volume = document.getElementById('pl-vol').value;
+  audio.play().catch(() => {});
+  npName.textContent   = PL_SONGS[idx].name;
+  npArtist.textContent = PL_SONGS[idx].artist;
+  items.forEach((el, i) => el.classList.toggle('active', i === idx));
+  isPlaying = true;
+  setIcon(true);
+  disc.classList.add('spinning');
+  viz.classList.add('active');
+}
+
+function plPause() {
+  audio.pause();
+  isPlaying = false;
+  setIcon(false);
+  disc.classList.remove('spinning');
+  viz.classList.remove('active');
+}
+
+function plToggle() {
+  if (current === -1) { plPlay(0); return; }
+  if (isPlaying) { plPause(); }
+  else {
+    audio.play().catch(() => {});
+    isPlaying = true; setIcon(true);
+    disc.classList.add('spinning');
+    viz.classList.add('active');
+  }
+}
+
+function plNext() { plPlay((current + 1) % PL_SONGS.length); }
+function plPrev() {
+  if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+  plPlay((current - 1 + PL_SONGS.length) % PL_SONGS.length);
+}
+function plSetVol(v) { audio.volume = v; }
+
+function setIcon(playing) {
+  playIcon.innerHTML = playing
+    ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+}
+
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  curEl.textContent = fmt(audio.currentTime);
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  durEl.textContent = fmt(audio.duration);
+  if (current >= 0) document.getElementById('dur-' + current).textContent = fmt(audio.duration);
+});
+
+audio.addEventListener('ended', plNext);
+
+document.getElementById('pl-progress').addEventListener('click', function(e) {
+  if (!audio.duration) return;
+  const r = this.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+});
+</script>
         </section>
 
         <section id="mensajes" class="content-section">
@@ -903,6 +1290,7 @@
 
 
 </html>
+
 
 
 
